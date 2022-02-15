@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Bluethink\BrandsIndexer\Indexer\BrandIndexerHandlerVirtual"
+                 type="Divante\VsbridgeIndexerCore\Indexer\GenericIndexerHandler">
+        <arguments>
+            <argument name="indexIdentifier" xsi:type="string">vue_storefront_catalog</argument>
+            <argument name="typeName" xsi:type="string">brands</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Bluethink\BrandsIndexer\Model\Indexer\Brands">
+        <arguments>
+            <argument name="indexerHandler" xsi:type="object">Bluethink\BrandsIndexer\Indexer\BrandIndexerHandlerVirtual</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\ShopbyBase\Model\OptionSetting">
+        <plugin name="update_amasty_brands_in_elastic" type="Bluethink\BrandsIndexer\Plugin\Indexer\Save\UpdateBrands"/>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="Amasty\ShopbyBase\Api\Data\OptionSettingInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">amasty_amshopby_option_setting</item>
+                    <item name="identifierField" xsi:type="string">option_setting_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
